@@ -1,1 +1,8 @@
-<input type="text" class="w-100 h-100" placeholder="What needs to be done?" required />
+<input
+    [(ngModel)]="todoContent"
+    (keyup.enter)="onSubmit()"
+    type="text"
+    class="w-100 h-100"
+    placeholder="What needs to be done?"
+    required
+/>

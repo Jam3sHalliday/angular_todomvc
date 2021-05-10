@@ -13,7 +13,5 @@ export class Todo {
     public id: number,
     public content: string,
     public isCompleted: boolean = false
-  ) {
-
-  }
+  ) {}
 }
