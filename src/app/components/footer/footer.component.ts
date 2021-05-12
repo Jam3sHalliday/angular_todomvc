@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { Filter, FilterButton } from 'src/app/models/filtering.model';
+import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
   selector: 'app-footer',
@@ -14,11 +17,39 @@ export class FooterComponent implements OnInit {
   ];
 
   length = 0;
+  hasCompleted$: Observable<boolean> = of(false);
+  destroy$: Subject<null> = new Subject<null>();
 
-  constructor() { }
+  constructor(private todoService: TodoService) { }
 
   ngOnInit(): void {
+    this.hasCompleted$ = this.todoService.todos$.pipe(
+      map(todos => todos.some(t => t.isCompleted)),
+      takeUntil(this.destroy$)
+    );
+    console.log(this.hasCompleted$);
 
+    this.todoService.length$.pipe(takeUntil(this.destroy$))
+      .subscribe(length => this.length = length);
   }
 
+  filter(type: Filter) {
+    this.setActiveFilterBtn(type);
+    this.todoService.filterTodos(type);
+  }
+
+  clearCompleted() {
+    this.todoService.clearCompleted();
+  }
+
+  private setActiveFilterBtn(type: Filter) {
+    this.filterButtons.forEach(btn => {
+      btn.isActive = btn.type === type;
+    })
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -11,8 +11,8 @@ export class TodoService {
 
   private static readonly TodoStorageKey = "todos";
 
-  private todos: Todo[];
-  private filteredTodos: Todo[];
+  private todos: Todo[] = [];
+  private filteredTodos: Todo[] = [];
   private lengthSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private displayTodosSubject: BehaviorSubject<Todo[]> = new BehaviorSubject<Todo[]>([]);
   private currentFilter: Filter = Filter.All;
@@ -20,10 +20,7 @@ export class TodoService {
   todos$: Observable<Todo[]> = this.displayTodosSubject.asObservable();
   length$: Observable<number> = this.lengthSubject.asObservable();
 
-  constructor(private storageService: LocalStorageService) {
-    this.todos = [];
-    this.filteredTodos = [];
-  }
+  constructor(private storageService: LocalStorageService) { }
 
   fetchFromLocalStorage() {
     this.todos = this.storageService.getValue<Todo[]>(TodoService.TodoStorageKey) || [];
@@ -90,6 +87,11 @@ export class TodoService {
     if (isFiltering) {
       this.updateTodosData();
     }
+  }
+
+  clearCompleted() {
+    this.todos = this.todos.filter(todo => !todo.isCompleted);
+    this.updateToLocalStorage();
   }
 
   private updateTodosData() {

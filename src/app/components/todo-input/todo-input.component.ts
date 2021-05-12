@@ -16,7 +16,6 @@ export class TodoInputComponent implements OnInit {
   }
 
   onTodoContentChanged(value: string) {
-    console.log('----', value);
   }
 
   onSubmit() {
