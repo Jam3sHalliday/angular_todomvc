@@ -57,19 +57,20 @@
             cursor: pointer;
         }
 
-        & .edit-form {
-          position: absolute;
-          width: 98.5%;
-          height: 100%;
-          background: #fff;
+    }
+    
+    & .edit-form {
+      position: absolute;
+      width: 98.5%;
+      height: 100%;
+      background: #fff;
 
-          & input {
-            height: 92%;
-            width: 92%;
-            margin-left: 35px;
-            font-size: 18px;
-            padding-left: 10px;
-          }
-        }
+      & input {
+        height: 92%;
+        width: 92%;
+        margin-left: 35px;
+        font-size: 18px;
+        padding-left: 10px;
+      }
     }
 }
